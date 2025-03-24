@@ -1,0 +1,37 @@
+{
+    "name": "ddon_api",
+    "version": "0.1.0",
+    "description": "",
+    "main": "./dist/server.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Gipson62/DDON_API"
+    },
+    "type": "module",
+    "dependencies": {
+        "@prisma/client": "^6.0.1",
+        "bcryptjs": "^2.4.3",
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2",
+        "express-promise-router": "^4.1.1",
+        "internal-ip": "^6.2.0",
+        "jsonwebtoken": "^9.0.2",
+        "multer": "^1.4.5-lts.1",
+        "node-cron": "^3.0.3",
+        "pg": "^8.13.1"
+    },
+    "scripts": {
+        "start": "npx tsc & node ./dist/server.js",
+        "dev": "nodemon ./server.js",
+        "initDB": "npx tsc & node ./dist/scripts/JS/initDB.js",
+        "genDoc": "node ./swagger/swagger_jsdoc.js"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/pg": "^8.11.11",
+        "nodemon": "^3.1.7",
+        "prisma": "^6.0.1",
+        "swagger-jsdoc": "^6.2.8",
+        "typescript": "^5.7.2"
+    }
+}
