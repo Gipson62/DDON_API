@@ -1,17 +1,91 @@
-export interface Statistic {
-    // Base stats
-    max_health?: number;
-    max_stamina?: number;
-    physical_attack?: number;
-    magick_attack?: number;
-    physical_defense?: number;
-    magick_defense?: number;
-    strength?: number;
-    magick?: number;
-    blow_power?: number;
-    endurance?: number;
-    chance_attack?: number;
-    exhaust_attack?: number;
-    knockout_power?: number;
-    weight?: number;
+type Opaque<K, T> = T & { __opaque__: K };
+
+export type int = Opaque<'int', number>;
+export type ID = Opaque<'ID', number>;
+
+export interface MainStatistics {
+    id              : ID,
+    max_health      : int | undefined,
+    max_stamina     : int | undefined,
+    physical_atk    : int | undefined,
+    magick_atk      : int | undefined,
+    physical_def    : int | undefined,
+    magick_def      : int | undefined,
+    strength        : int | undefined,
+    magick          : int | undefined,
+    blow_power      : int | undefined,
+    endurance       : int | undefined,
+    chance_attack   : int | undefined,
+    healing_power   : int | undefined,
+    exhaust_attack  : int | undefined,
+    knockout_power  : int | undefined,
+    weight          : int | undefined
+}
+
+export interface BuffStatistics {
+    id                          : ID,
+    guard_power                 : int | undefined,
+    max_force_stock             : int | undefined,
+    blocking_stamina_reduce     : int | undefined,
+    max_loaded_arrows           : int | undefined,
+ 
+    giant_slayer                : int | undefined,
+    dragon_slayer               : int | undefined,
+    demon_slayer                : int | undefined,
+    spirit_slayer               : int | undefined,
+    corrupted_slayer            : int | undefined,
+    skeleton_slayer             : int | undefined,
+    undead_slayer               : int | undefined,
+    war_ready_slayer            : int | undefined,
+    demihuman_slayer            : int | undefined,
+    beast_slayer                : int | undefined,
+    demon_kin_slayer            : int | undefined,
+    winged_slayer               : int | undefined,
+    formless_slayer             : int | undefined,
+    cursed_slayer               : int | undefined,
+    golem_slayer                : int | undefined,
+    alchemy_slayer              : int | undefined,
+ 
+    inflict_blind               : int | undefined,     
+    inflict_golden              : int | undefined, 
+    inflict_petrification       : int | undefined, 
+    inflict_frozen_solid        : int | undefined, 
+    inflict_holy_drain          : int | undefined, 
+    inflict_torpor              : int | undefined, 
+    inflict_frail               : int | undefined, 
+    inflict_sleep               : int | undefined, 
+    inflict_tarring             : int | undefined, 
+    inflick_shock               : int | undefined, 
+    inflict_holy_res_down       : int | undefined, 
+    inflict_ice_res_down        : int | undefined, 
+    inflict_thunder_res_down    : int | undefined, 
+    inflict_dark_res_down       : int | undefined, 
+    inflict_physical_res_down   : int | undefined, 
+    inflict_magick_res_down     : int | undefined, 
+ 
+    resist_blind                : int | undefined,
+    resist_golden               : int | undefined,
+    resist_petrification        : int | undefined,
+    resist_frozen_solid         : int | undefined,
+    resist_torpor               : int | undefined,
+    resist_poison               : int | undefined,
+    resist_curse                : int | undefined,
+    resist_knockout             : int | undefined,
+    resist_skill_stifling       : int | undefined,
+    resist_shock                : int | undefined,
+    resist_drenching            : int | undefined,
+    resist_sleep                : int | undefined,
+    resist_tarring              : int | undefined,
+    resist_catching_fire        : int | undefined,
+ 
+    thunder_res                 : int | undefined,
+    dark_res                    : int | undefined,
+    holy_res                    : int | undefined,
+    fire_res                    : int | undefined,
+    ice_res                     : int | undefined,
+    corruption_res              : int | undefined,
+ 
+    resist_holy_res_down        : int | undefined,
+    resist_physical_res_down    : int | undefined,
+    resist_magick_res_down      : int | undefined,
 }

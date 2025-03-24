@@ -1,4 +1,151 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
-  provider = "sqlite"
-  url = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model armorkind {
+  id          Int    @id
+  name        String
+  description String
+}
+
+model arrowkind {
+  id          Int    @id
+  name        String
+  description String
+}
+
+model buffstatistics {
+  id                        Int      @id @default(autoincrement())
+  guard_power               Int      @db.SmallInt
+  max_force_stock           Int      @db.SmallInt
+  blocking_stamina_reduce   Int      @db.SmallInt
+  max_loaded_arrows         Int      @db.SmallInt
+  giant_slayer              Int      @db.SmallInt
+  dragon_slayer             Int      @db.SmallInt
+  demon_slayer              Int      @db.SmallInt
+  spirit_slayer             Int      @db.SmallInt
+  corrupted_slayer          Int      @db.SmallInt
+  skeleton_slayer           Int      @db.SmallInt
+  undead_slayer             Int      @db.SmallInt
+  war_ready_slayer          Int      @db.SmallInt
+  demihuman_slayer          Int      @db.SmallInt
+  beast_slayer              Int      @db.SmallInt
+  demon_kin_slayer          Int      @db.SmallInt
+  winged_slayer             Int      @db.SmallInt
+  formless_slayer           Int      @db.SmallInt
+  cursed_slayer             Int      @db.SmallInt
+  golem_slayer              Int      @db.SmallInt
+  alchemy_slayer            Int      @db.SmallInt
+  inflict_blind             Int      @db.SmallInt
+  inflict_golden            Int      @db.SmallInt
+  inflict_petrification     Int      @db.SmallInt
+  inflict_frozen_solid      Int      @db.SmallInt
+  inflict_holy_drain        Int      @db.SmallInt
+  inflict_torpor            Int      @db.SmallInt
+  inflict_frail             Int      @db.SmallInt
+  inflict_sleep             Int      @db.SmallInt
+  inflict_tarring           Int      @db.SmallInt
+  inflick_shock             Int      @db.SmallInt
+  inflict_holy_res_down     Int      @db.SmallInt
+  inflict_ice_res_down      Int      @db.SmallInt
+  inflict_thunder_res_down  Int      @db.SmallInt
+  inflict_dark_res_down     Int      @db.SmallInt
+  inflict_physical_res_down Int      @db.SmallInt
+  inflict_magick_res_down   Int      @db.SmallInt
+  resist_blind              Int      @db.SmallInt
+  resist_golden             Int      @db.SmallInt
+  resist_petrification      Int      @db.SmallInt
+  resist_frozen_solid       Int      @db.SmallInt
+  resist_torpor             Int      @db.SmallInt
+  resist_poison             Int      @db.SmallInt
+  resist_curse              Int      @db.SmallInt
+  resist_knockout           Int      @db.SmallInt
+  resist_skill_stifling     Int      @db.SmallInt
+  resist_shock              Int      @db.SmallInt
+  resist_drenching          Int      @db.SmallInt
+  resist_sleep              Int      @db.SmallInt
+  resist_tarring            Int      @db.SmallInt
+  resist_catching_fire      Int      @db.SmallInt
+  thunder_res               Int      @db.SmallInt
+  dark_res                  Int      @db.SmallInt
+  holy_res                  Int      @db.SmallInt
+  fire_res                  Int      @db.SmallInt
+  ice_res                   Int      @db.SmallInt
+  corruption_res            Int      @db.SmallInt
+  resist_holy_res_down      Int      @db.SmallInt
+  resist_physical_res_down  Int      @db.SmallInt
+  resist_magick_res_down    Int      @db.SmallInt
+  weapon                    weapon[]
+}
+
+model mainstatistic {
+  id             Int      @id @default(autoincrement())
+  max_health     Int      @db.SmallInt
+  max_stamina    Int      @db.SmallInt
+  physical_atk   Int      @db.SmallInt
+  magick_atk     Int      @db.SmallInt
+  physical_def   Int      @db.SmallInt
+  magick_def     Int      @db.SmallInt
+  strength       Int      @db.SmallInt
+  magick         Int      @db.SmallInt
+  blow_power     Int      @db.SmallInt
+  endurance      Int      @db.SmallInt
+  chance_attack  Int      @db.SmallInt
+  healing_power  Int      @db.SmallInt
+  exhaust_attack Int      @db.SmallInt
+  knockout_power Int      @db.SmallInt
+  weight         Int      @db.SmallInt
+  weapon         weapon[]
+}
+
+model tag {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model vocation {
+  id                                          Int              @id @default(autoincrement())
+  name                                        String           @unique
+  main_weapon                                 Int
+  sub_weapon                                  Int?
+  description                                 String
+  weaponkind_vocation_main_weaponToweaponkind weaponkind       @relation("vocation_main_weaponToweaponkind", fields: [main_weapon], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  weaponkind_vocation_sub_weaponToweaponkind  weaponkind?      @relation("vocation_sub_weaponToweaponkind", fields: [sub_weapon], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  weaponvocation                              weaponvocation[]
+}
+
+model weapon {
+  id             Int              @id @default(autoincrement())
+  name           String
+  kind           Int
+  description    String
+  main_statistic Int
+  buff_stats     Int?
+  buffstatistics buffstatistics?  @relation(fields: [buff_stats], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  weaponkind     weaponkind       @relation(fields: [kind], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mainstatistic  mainstatistic    @relation(fields: [main_statistic], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  weaponvocation weaponvocation[]
+}
+
+model weaponkind {
+  id                                        Int        @id
+  name                                      String
+  description                               String
+  vocation_vocation_main_weaponToweaponkind vocation[] @relation("vocation_main_weaponToweaponkind")
+  vocation_vocation_sub_weaponToweaponkind  vocation[] @relation("vocation_sub_weaponToweaponkind")
+  weapon                                    weapon[]
+}
+
+model weaponvocation {
+  weapon_id   Int
+  vocation_id Int
+  vocation    vocation @relation(fields: [vocation_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  weapon      weapon   @relation(fields: [weapon_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([weapon_id, vocation_id])
 }

@@ -1,3 +1,11 @@
+DROP TABLE IF EXISTS WeaponVocation;
+DROP TABLE IF EXISTS Weapon;
+DROP TABLE IF EXISTS BuffStatistics;
+DROP TABLE IF EXISTS MainStatistic;
+DROP TABLE IF EXISTS Tag;
+DROP TABLE IF EXISTS ArrowKind;
+DROP TABLE IF EXISTS ArmorKind;
+DROP TABLE IF EXISTS Vocation;
 DROP TABLE IF EXISTS WeaponKind;
 CREATE TABLE WeaponKind (
     -- Hardcoded IDs because they are not expected to change
@@ -13,7 +21,6 @@ INSERT INTO WeaponKind (id, "name", "description") VALUES
 (9, 'Greatsword', '[PlaceHolder]'), (10, 'Magick Gauntlet', '[PlaceHolder]'), (11, 'Spirit Lance', '[PlaceHolder]'),
 (12, 'Magick Sword', '[PlaceHolder]');
 
-DROP TABLE IF EXISTS ArmorKind;
 CREATE TABLE ArmorKind (
     -- Hardcoded IDs because they are not expected to change
     -- and no way to add new ones
@@ -27,7 +34,6 @@ INSERT INTO ArmorKind (id, "name", "description") VALUES
 (6, 'Overwear', '[PlaceHolder]'), (7, 'Jewelry', '[PlaceHolder]');
 
 -- Specific for the Hunter vocation
-DROP TABLE IF EXISTS ArrowKind;
 CREATE TABLE ArrowKind (
     -- Hardcoded IDs because they are not expected to change
     -- and no way to add new ones
@@ -43,10 +49,9 @@ INSERT INTO ArrowKind (id, "name", "description") VALUES
 (5, 'Silencer Arrow', 'An arrow used by Hunters that can inflict the Silenced debilitation on enemies. Can be purchased from merchants or crafted.'),
 (6, 'Asininity Arrow', 'An arrow used by Hunters that can inflict the Torpor debilitation on enemies. Can be purchased from merchants or crafted.');
 
-DROP TABLE IF EXISTS Vocation;
 CREATE TABLE Vocation (
     id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "name"          TEXT NOT NULL,
+    "name"          TEXT NOT NULL UNIQUE,
     main_weapon     integer NOT NULL REFERENCES WeaponKind(id),
     -- NULL if no sub weapon
     sub_weapon      integer REFERENCES WeaponKind(id),
@@ -65,7 +70,6 @@ INSERT INTO Vocation ("name", main_weapon, sub_weapon, "description") VALUES
 ('Spirit Lancer', 11, NULL, 'A warrior blessed and protected by the spirits. With their spirit spear they can heal, lead and support the party. The Druid of the Battlefield.'),
 ('High Scepter', 12, NULL, 'A magical swordsman who uses his sword to take his enemies'' magic into his own hands. Transforms magic into offensive and defensive magic. He shines by overturning the battle situation in various situations.');
 
-DROP TABLE IF EXISTS Tag;
 CREATE TABLE Tag (
     id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "name"          text NOT NULL
@@ -74,7 +78,6 @@ INSERT INTO Tag ("name") VALUES
 ('Physical'),   ('Magical'),    ('Support'),    ('Heal'),       ('Debuff'),     ('Buff'), 
 ('Tank'),       ('DPS'),        ('Mid Game'),   ('Late Game'),  ('Early Game'), ('Preview Build'); -- "Preview Build" is for builds that are not yet released
 
-DROP TABLE IF EXISTS MainStatistic;
 CREATE TABLE MainStatistic (
     id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     max_health      smallint NOT NULL,
@@ -85,7 +88,7 @@ CREATE TABLE MainStatistic (
     magick_def      smallint NOT NULL,
     strength        smallint NOT NULL,
     magick          smallint NOT NULL,
-    blow_poser      smallint NOT NULL,
+    blow_power      smallint NOT NULL,
     endurance       smallint NOT NULL,
     chance_attack   smallint NOT NULL,
     healing_power   smallint NOT NULL,
@@ -94,7 +97,6 @@ CREATE TABLE MainStatistic (
     "weight"        smallint NOT NULL
 );
 
-DROP TABLE IF EXISTS BuffStatistics;
 CREATE TABLE BuffStatistics (
     id                          integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     guard_power                 smallint NOT NULL,
@@ -167,19 +169,17 @@ CREATE TABLE BuffStatistics (
     resist_magick_res_down      smallint NOT NULL
 );
 
-DROP TABLE IF EXISTS Weapon;
 CREATE TABLE Weapon (
     id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "name"          text NOT NULL,
     kind            integer NOT NULL REFERENCES WeaponKind(id),
     "description"   text NOT NULL,
     -- The main statistic of the weapon
-    -- Can't be null as opposed to StatusStats
+    -- Can't be null as opposed to BuffStatistics
     main_statistic  integer NOT NULL REFERENCES MainStatistic(id),
-    status_stats    integer[] NOT NULL REFERENCES BuffStatistics(id)
+    buff_stats      integer REFERENCES BuffStatistics(id)
 );
 
-DROP TABLE IF EXISTS WeaponVocation;
 CREATE TABLE WeaponVocation (
     weapon_id       integer NOT NULL REFERENCES Weapon(id),
     vocation_id     integer NOT NULL REFERENCES Vocation(id),

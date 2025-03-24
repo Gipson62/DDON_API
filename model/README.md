@@ -1,0 +1,1 @@
+This is just in preparation for the frontend, it won't actually be used in the API (because Prisma will handle the database schema). But it's a good way to get a feel for the data structure and how it will be used in the frontend.
