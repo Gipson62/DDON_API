@@ -2,69 +2,78 @@
     {
         "id": 0,
         "name": "Fighter", 
-        "main_weapon": "One-handed-Sword",
-        "sub_weapon": "Shield",
+        "main_weapon": 0,
+        "sub_weapon": 1,
         "description": "Balances offense and defense in battle. Can use their shield to counter attacks. The leader of the Battlefield."
     },
     {
         "id": 1,
         "name": "Hunter", 
-        "main_weapon": "Bow",
+        "main_weapon": 2,
+        "sub_weapon": null,
         "description": "Able to deal precise damage from long distances. Has a variety of support abilities by the use of special arrows. The Sniper of the Battlefield."
     },
     {
         "id": 2,
         "name": "Priest", 
-        "main_weapon": "Staff",
+        "main_weapon": 3,
+        "sub_weapon": null,
         "description": "Supports the party with healing and support magick. Can not only heal, but also reveal weaknesses of enemies. The Pillar of the Battlefield."
     },
     {
         "id": 3,
         "name": "Shieldsage", 
-        "main_weapon": "Greatshield",
-        "sub_weapon": "Rod",
+        "main_weapon": 4,
+        "sub_weapon": 5,
         "description": "Attracts attention and protects others with their strong defense. Convert the power of their enemis into magick of the five elements to attack and support. The Fortress of the Battlefield."
     },
     {
         "id": 4,
         "name": "Seeker", 
-        "main_weapon": "Daggers",
+        "main_weapon": 6,
+        "sub_weapon": null,
         "description": "An acrobat who excels at hit and run tactics. Uses a rope to instantly move to the blind spot of large enemies. The Gale of the Battlefield."
     },
     {
         "id": 5,
         "name": "Sorcerer", 
-        "main_weapon": "Archistaff",
+        "main_weapon": 7,
+        "sub_weapon": null,
         "description": "Magician who commands great magick to cause greater harm. Can enhance magick by chanting, but needs to be protected. The Calamity of the Battlefield."
     },
     {
         "id": 6,
         "name": "Element Archer", 
-        "main_weapon": "Magick Bow",
+        "main_weapon": 8,
+        "sub_weapon": null,
         "description": "Mysterious archer who manipulates magick into their magick bow. They can attack enemies, supports alliers and show the weak points of enemies. They Eyes of the Battlefield."
     },
     {
         "id": 7,
         "name": "Warrior", 
-        "main_weapon": "Greatsword",
+        "main_weapon": 9,
+        "sub_weapon": null,
         "description": "Endures pain to deliver even greater damage to their enemies. One swing of their huge sword can even bury enemies. The Behemoth of the Battlefield."
     },
     {
         "id": 8,
         "name": "Alchemist", 
-        "main_weapon": "Magick Gauntlet",
+        "main_weapon": 10,
+        "sub_weapon": null,
         "description": "Soldier who attracks the enemies'' attention using alchemy and high mobility. Uses the secret of alchemy to inflict and manipulate status abnormalities. The Trickster of the Battlefield."
     },
     {
         "id": 9,
         "name": "Spirit Lancer", 
-        "main_weapon": "Spirit Lance",
+        "main_weapon": 11,
+        "sub_weapon": null,
         "description": "A warrior blessed and protected by the spirits. With their spirit spear they can heal, lead and support the party. The Druid of the Battlefield."
     },
     {
         "id": 10,
         "name": "High Scepter", 
-        "main_weapon": "Magick Sword",
+        "main_weapon": 12,
+        "sub_weapon": null,
         "description": "A magical swordsman who uses his sword to take his enemies'' magic into his own hands. Transforms magic into offensive and defensive magic. He shines by overturning the battle situation in various situations."
     }
 ]

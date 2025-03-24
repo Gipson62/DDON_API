@@ -6,5 +6,5 @@ export interface Vocation {
     name: string;
     description: string;
     main_weapon: WeaponKind;
-    sub_weapon?: WeaponKind;
+    sub_weapon: WeaponKind | null;
 }

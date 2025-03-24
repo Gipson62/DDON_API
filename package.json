@@ -23,7 +23,7 @@
     "scripts": {
         "start": "npx tsc & node ./dist/server.js",
         "dev": "nodemon ./server.js",
-        "initDB": "npx tsc & node ./dist/scripts/JS/initDB.js",
+        "initDB": "npx tsc & node ./dist/scripts/TS/initDB.js",
         "genDoc": "node ./swagger/swagger_jsdoc.js"
     },
     "devDependencies": {

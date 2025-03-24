@@ -17,12 +17,12 @@ CREATE TABLE WeaponKind (
     "name"          text NOT NULL,
     "description"   text NOT NULL
 );
-INSERT INTO WeaponKind (id, "name", "description") VALUES
-(0, 'One-handed Sword', '[PlaceHolder]'), (1, 'Shield', '[PlaceHolder]'), (2, 'Bow', '[PlaceHolder]'), 
-(3, 'Staff', '[PlaceHolder]'), (4, 'Greatshield', '[PlaceHolder]'), (5, 'Rod', '[PlaceHolder]'), 
-(6, 'Daggers', '[PlaceHolder]'), (7, 'Archistaff', '[PlaceHolder]'), (8, 'Magick Bow', '[PlaceHolder]'),
-(9, 'Greatsword', '[PlaceHolder]'), (10, 'Magick Gauntlet', '[PlaceHolder]'), (11, 'Spirit Lance', '[PlaceHolder]'),
-(12, 'Magick Sword', '[PlaceHolder]');
+-- INSERT INTO WeaponKind (id, "name", "description") VALUES
+-- (0, 'One-handed Sword', '[PlaceHolder]'), (1, 'Shield', '[PlaceHolder]'), (2, 'Bow', '[PlaceHolder]'), 
+-- (3, 'Staff', '[PlaceHolder]'), (4, 'Greatshield', '[PlaceHolder]'), (5, 'Rod', '[PlaceHolder]'), 
+-- (6, 'Daggers', '[PlaceHolder]'), (7, 'Archistaff', '[PlaceHolder]'), (8, 'Magick Bow', '[PlaceHolder]'),
+-- (9, 'Greatsword', '[PlaceHolder]'), (10, 'Magick Gauntlet', '[PlaceHolder]'), (11, 'Spirit Lance', '[PlaceHolder]'),
+-- (12, 'Magick Sword', '[PlaceHolder]');
 
 CREATE TABLE ArmorKind (
     -- Hardcoded IDs because they are not expected to change

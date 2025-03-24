@@ -9,18 +9,8 @@ export interface Weapon {
     buff_stat   : BuffStatistics
 }
 
-export enum WeaponKind {
-    OneHandedSword,
-    Shield,
-    Bow,
-    Staff,
-    GreatShield,
-    Rod,
-    Daggers,
-    Archistaff,
-    MagickBow,
-    GreatSword,
-    MagickGauntlet,
-    SpiritLance,
-    MagickSword
+export interface WeaponKind {
+    id:     ID;
+    name:   string;
+    description: string;
 }
