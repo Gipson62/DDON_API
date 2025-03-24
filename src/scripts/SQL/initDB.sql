@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS Crest;
+DROP TABLE IF EXISTS Augment;
+DROP TABLE IF EXISTS Skill;
 DROP TABLE IF EXISTS WeaponVocation;
 DROP TABLE IF EXISTS Weapon;
 DROP TABLE IF EXISTS BuffStatistics;
@@ -50,25 +53,25 @@ INSERT INTO ArrowKind (id, "name", "description") VALUES
 (6, 'Asininity Arrow', 'An arrow used by Hunters that can inflict the Torpor debilitation on enemies. Can be purchased from merchants or crafted.');
 
 CREATE TABLE Vocation (
-    id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id              integer PRIMARY KEY,
     "name"          TEXT NOT NULL UNIQUE,
     main_weapon     integer NOT NULL REFERENCES WeaponKind(id),
     -- NULL if no sub weapon
     sub_weapon      integer REFERENCES WeaponKind(id),
     "description"   text NOT NULL
 );
-INSERT INTO Vocation ("name", main_weapon, sub_weapon, "description") VALUES 
-('Fighter', 0, 1, 'Balances offense and defense in battle. Can use their shield to counter attacks. The leader of the Battlefield.'),
-('Hunter', 2, NULL, 'Able to deal precise damage from long distances. Has a variety of support abilities by the use of special arrows. The Sniper of the Battlefield.'),
-('Priest', 3, NULL, 'Supports the party with healing and support magick. Can not only heal, but also reveal weaknesses of enemies. The Pillar of the Battlefield.'),
-('Shieldsage', 4, 5, 'Attracts attention and protects others with their strong defense. Convert the power of their enemis into magick of the five elements to attack and support. The Fortress of the Battlefield.'),
-('Seeker', 6, NULL, 'An acrobat who excels at hit and run tactics. Uses a rope to instantly move to the blind spot of large enemies. The Gale of the Battlefield.'),
-('Sorcerer', 7, NULL, 'Magician who commands great magick to cause greater harm. Can enhance magick by chanting, but needs to be protected. The Calamity of the Battlefield.'),
-('Element Archer', 8, NULL, 'Mysterious archer who manipulates magick into their magick bow. They can attack enemies, supports alliers and show the weak points of enemies. They Eyes of the Battlefield.'),
-('Warrior', 9, NULL, 'Endures pain to deliver even greater damage to their enemies. One swing of their huge sword can even bury enemies. The Behemoth of the Battlefield.'),
-('Alchemist', 10, NULL, 'Soldier who attracks the enemies'' attention using alchemy and high mobility. Uses the secret of alchemy to inflict and manipulate status abnormalities. The Trickster of the Battlefield.'),
-('Spirit Lancer', 11, NULL, 'A warrior blessed and protected by the spirits. With their spirit spear they can heal, lead and support the party. The Druid of the Battlefield.'),
-('High Scepter', 12, NULL, 'A magical swordsman who uses his sword to take his enemies'' magic into his own hands. Transforms magic into offensive and defensive magic. He shines by overturning the battle situation in various situations.');
+-- INSERT INTO Vocation ("name", main_weapon, sub_weapon, "description") VALUES 
+-- ('Fighter', 0, 1, 'Balances offense and defense in battle. Can use their shield to counter attacks. The leader of the Battlefield.'),
+-- ('Hunter', 2, NULL, 'Able to deal precise damage from long distances. Has a variety of support abilities by the use of special arrows. The Sniper of the Battlefield.'),
+-- ('Priest', 3, NULL, 'Supports the party with healing and support magick. Can not only heal, but also reveal weaknesses of enemies. The Pillar of the Battlefield.'),
+-- ('Shieldsage', 4, 5, 'Attracts attention and protects others with their strong defense. Convert the power of their enemis into magick of the five elements to attack and support. The Fortress of the Battlefield.'),
+-- ('Seeker', 6, NULL, 'An acrobat who excels at hit and run tactics. Uses a rope to instantly move to the blind spot of large enemies. The Gale of the Battlefield.'),
+-- ('Sorcerer', 7, NULL, 'Magician who commands great magick to cause greater harm. Can enhance magick by chanting, but needs to be protected. The Calamity of the Battlefield.'),
+-- ('Element Archer', 8, NULL, 'Mysterious archer who manipulates magick into their magick bow. They can attack enemies, supports alliers and show the weak points of enemies. They Eyes of the Battlefield.'),
+-- ('Warrior', 9, NULL, 'Endures pain to deliver even greater damage to their enemies. One swing of their huge sword can even bury enemies. The Behemoth of the Battlefield.'),
+-- ('Alchemist', 10, NULL, 'Soldier who attracks the enemies'' attention using alchemy and high mobility. Uses the secret of alchemy to inflict and manipulate status abnormalities. The Trickster of the Battlefield.'),
+-- ('Spirit Lancer', 11, NULL, 'A warrior blessed and protected by the spirits. With their spirit spear they can heal, lead and support the party. The Druid of the Battlefield.'),
+-- ('High Scepter', 12, NULL, 'A magical swordsman who uses his sword to take his enemies'' magic into his own hands. Transforms magic into offensive and defensive magic. He shines by overturning the battle situation in various situations.');
 
 CREATE TABLE Tag (
     id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -184,4 +187,22 @@ CREATE TABLE WeaponVocation (
     weapon_id       integer NOT NULL REFERENCES Weapon(id),
     vocation_id     integer NOT NULL REFERENCES Vocation(id),
     PRIMARY KEY (weapon_id, vocation_id)
+);
+
+CREATE TABLE Skill ( -- Active skills
+    id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "name"          text NOT NULL UNIQUE,
+    "description"   text NOT NULL,
+    vocation_id     integer NOT NULL REFERENCES Vocation(id) -- Can't be null as opposed to Augment
+);
+
+CREATE TABLE Augment ( -- Passive skills
+    id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "name"          text NOT NULL UNIQUE,
+    "description"   text NOT NULL,
+    vocation_id     integer REFERENCES Vocation(id) -- Optional, NULL if universal
+);
+
+CREATE TABLE CREST (
+    "name"          text NOT NULL
 );

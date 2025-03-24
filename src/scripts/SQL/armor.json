@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Rubedo Gauntlets",
+        "kind": "Arm Armor",
+        "IR": 12,
+        "LVL": 60,
+        "endurance": 13,
+        "weight": 56,
+        "resist_golden": 5,
+        "physical_atk": 252,
+        "magick_def": 210,
+        "vocation": [
+            "Warrior"
+        ]
+    }
+]
