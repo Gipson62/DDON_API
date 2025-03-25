@@ -1,58 +1,59 @@
+DROP TABLE IF EXISTS BuildTag;
+DROP TABLE IF EXISTS Build;
 DROP TABLE IF EXISTS Crest;
 DROP TABLE IF EXISTS Augment;
 DROP TABLE IF EXISTS Skill;
+DROP TABLE IF EXISTS Jewelry;
+DROP TABLE IF EXISTS ArmorVocation;
+DROP TABLE IF EXISTS Armor;
 DROP TABLE IF EXISTS WeaponVocation;
 DROP TABLE IF EXISTS Weapon;
 DROP TABLE IF EXISTS BuffStatistics;
 DROP TABLE IF EXISTS MainStatistic;
 DROP TABLE IF EXISTS Tag;
-DROP TABLE IF EXISTS ArrowKind;
-DROP TABLE IF EXISTS ArmorKind;
+DROP TABLE IF EXISTS VocationSpecificItem;
 DROP TABLE IF EXISTS Vocation;
+DROP TABLE IF EXISTS ArmorKind;
 DROP TABLE IF EXISTS WeaponKind;
 CREATE TABLE WeaponKind (
-    -- Hardcoded IDs because they are not expected to change
-    -- and no way to add new ones
     "name"          text NOT NULL PRIMARY KEY,
     "description"   text NOT NULL
 );
 
 CREATE TABLE ArmorKind (
-    -- Hardcoded IDs because they are not expected to change
-    -- and no way to add new ones
     "name"          text NOT NULL PRIMARY KEY,
     "description"   text NOT NULL
 );
 
--- Specific for the Hunter vocation
-CREATE TABLE ArrowKind (
-    -- Hardcoded IDs because they are not expected to change
-    -- and no way to add new ones
-    -- They also correspond to the IR of the item
-    "name"          text NOT NULL,
-    "description"   text NOT NULL
-);
-INSERT INTO ArrowKind ("name", "description") VALUES
-('Poison Arrow', 'An arrow used by Hunters that can inflict the Poisoned debilitation on enemies. Can be purchased from merchants or crafted.'),
-('Oil Arrow', 'An arrow used by Hunters that can inflict the Tarring debilitation on enemies. Can be purchased from merchants or crafted.'),
-('Sleeper Arrow', 'An arrow used by Hunters that can inflict the Sleep debilitation on enemies. Can be purchased from merchants or crafted.'),
-('Silencer Arrow', 'An arrow used by Hunters that can inflict the Silenced debilitation on enemies. Can be purchased from merchants or crafted.'),
-('Asininity Arrow', 'An arrow used by Hunters that can inflict the Torpor debilitation on enemies. Can be purchased from merchants or crafted.');
-
 CREATE TABLE Vocation (
-    "name"          text NOT NULL UNIQUE,
+    "name"          text NOT NULL PRIMARY KEY,
     main_weapon     text NOT NULL REFERENCES WeaponKind("name"),
     -- NULL if no sub weapon
     sub_weapon      text REFERENCES WeaponKind("name"),
     "description"   text NOT NULL
 );
 
+-- Specific for the Hunter vocation
+CREATE TABLE VocationSpecificItem ( -- Items that are exclusive to a vocation (e.g. Arrows for the hunter and Elixirs for the alchemist)
+    "name"          text NOT NULL PRIMARY KEY,
+    "description"   text NOT NULL,
+    vocation        text NOT NULL REFERENCES Vocation("name") CONSTRAINT fk_vocation CHECK (vocation = 'Hunter' or vocation = 'Alchemist') 
+);
+
 CREATE TABLE Tag (
     "name"          text NOT NULL PRIMARY KEY
 );
-INSERT INTO Tag ("name") VALUES 
-('Physical'),   ('Magical'),    ('Support'),    ('Heal'),       ('Debuff'),     ('Buff'), 
-('Tank'),       ('DPS'),        ('Mid Game'),   ('Late Game'),  ('Early Game'), ('Preview Build'); -- "Preview Build" is for builds that are not yet released
+
+CREATE TABLE Buff (
+    id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "name"          text NOT NULL UNIQUE
+);
+
+CREATE TABLE BuffEffect (
+    buff_id         integer NOT NULL REFERENCES Buff(id),
+    "value"         smallint NOT NULL,
+    PRIMARY KEY (buff_id, "value")
+);
 
 CREATE TABLE MainStatistic (
     id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -147,7 +148,7 @@ CREATE TABLE BuffStatistics (
 
 CREATE TABLE Weapon (
     id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "name"          text NOT NULL,
+    "name"          text NOT NULL UNIQUE,
     kind            text NOT NULL REFERENCES WeaponKind("name"),
     "description"   text NOT NULL,
     -- The main statistic of the weapon
@@ -157,25 +158,89 @@ CREATE TABLE Weapon (
 );
 
 CREATE TABLE WeaponVocation (
-    weapon          text NOT NULL REFERENCES WeaponKind("name"),
+    weapon          integer NOT NULL REFERENCES Weapon(id),
     vocation        text NOT NULL REFERENCES Vocation("name"),
     PRIMARY KEY (weapon, vocation)
 );
 
-CREATE TABLE Skill ( -- Active skills
+CREATE TABLE Armor (
     id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "name"          text NOT NULL UNIQUE,
+    kind            text NOT NULL REFERENCES ArmorKind("name"),
     "description"   text NOT NULL,
-    vocation_id     text NOT NULL REFERENCES Vocation("name") -- Can't be null as opposed to Augment
+    main_statistic  integer NOT NULL REFERENCES MainStatistic(id),
+    buff_stats      integer REFERENCES BuffStatistics(id)
+);
+
+CREATE TABLE ArmorVocation (
+    armor           integer NOT NULL REFERENCES Armor(id),
+    vocation        text NOT NULL REFERENCES Vocation("name"),
+    PRIMARY KEY (armor, vocation)
+);
+
+CREATE TABLE Jewelry ( -- Separate from armor because jewelry is not vocation locked
+    id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "name"          text NOT NULL UNIQUE,
+    kind            text NOT NULL REFERENCES ArmorKind("name"),
+    "description"   text NOT NULL,
+    main_statistic  integer NOT NULL REFERENCES MainStatistic(id),
+    buff_stats      integer REFERENCES BuffStatistics(id)
+);
+
+CREATE TABLE Skill ( -- Active skills
+    "name"          text NOT NULL UNIQUE,
+    "description"   text NOT NULL,
+    vocation        text NOT NULL REFERENCES Vocation("name"), -- Can't be null as opposed to Augment
+    PRIMARY KEY ("name", vocation)
 );
 
 CREATE TABLE Augment ( -- Passive skills
-    id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "name"          text NOT NULL UNIQUE,
     "description"   text NOT NULL,
-    vocation_id     text REFERENCES Vocation("name") -- Optional, NULL if universal
+    vocation_id     text REFERENCES Vocation("name"), -- Optional, NULL if universal
+    PRIMARY KEY ("name", vocation_id)
 );
 
-CREATE TABLE CREST (
-    "name"          text NOT NULL
+CREATE TABLE Crest (
+    "name"          text NOT NULL,
+    "description"   text NOT NULL,
+    buff_stats      integer NOT NULL REFERENCES BuffStatistics(id)
+);
+
+CREATE TABLE Build (
+    id              integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "name"          text NOT NULL,
+    "description"   text NOT NULL,
+
+    vocation_id     text NOT NULL REFERENCES Vocation("name"),
+    is_pawn_build   boolean NOT NULL,
+    main_statistic  integer NOT NULL REFERENCES MainStatistic(id),  -- used to have a baseline for the build
+    buff_stats      integer NOT NULL REFERENCES BuffStatistics(id), -- used to have a baseline for the build
+
+    main_weapon     integer NOT NULL REFERENCES Weapon(id),
+    sub_weapon      integer REFERENCES Weapon(id),
+
+    voc_exclusive_1 text REFERENCES VocationSpecificItem("name"),
+    voc_exclusive_2 text REFERENCES VocationSpecificItem("name"),
+
+    head_armor      integer NOT NULL REFERENCES Armor(id),
+    body_armor      integer NOT NULL REFERENCES Armor(id),
+    arm_armor       integer NOT NULL REFERENCES Armor(id),
+    leg_armor       integer NOT NULL REFERENCES Armor(id),
+    body_clothing   integer NOT NULL REFERENCES Armor(id),
+    legwear         integer NOT NULL REFERENCES Armor(id),
+    overwear        integer NOT NULL REFERENCES Armor(id),
+
+    jewelry_1       integer NOT NULL REFERENCES Armor(id),
+    jewelry_2       integer NOT NULL REFERENCES Armor(id),
+    jewelry_3       integer NOT NULL REFERENCES Armor(id),
+    jewelry_4       integer NOT NULL REFERENCES Armor(id),
+    jewelry_5       integer NOT NULL REFERENCES Armor(id),
+    UNIQUE ("name", vocation_id)
+);
+
+Create TABLE BuildTag (
+    build_id        integer NOT NULL REFERENCES Build(id),
+    tag_id          text NOT NULL REFERENCES Tag("name"),
+    PRIMARY KEY (build_id, tag_id)
 );
