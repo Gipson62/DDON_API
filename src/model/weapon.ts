@@ -10,7 +10,6 @@ export interface Weapon {
 }
 
 export interface WeaponKind {
-    id:     ID;
-    name:   string;
-    description: string;
+    name        : string;
+    description : string;
 }

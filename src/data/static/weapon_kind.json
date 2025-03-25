@@ -1,66 +1,53 @@
 [
     {
-        "id": 0,
-        "name": "One-handed-Sword",
+        "name": "One-handed Sword",
         "description": null
     },
     {
-        "id": 1,
         "name": "Shield",
         "description": null
     },
     {
-        "id": 2,
         "name": "Bow",
         "description": null
     },
     {
-        "id": 3,
         "name": "Staff",
         "description": null
     },
     {
-        "id": 4,
         "name": "Greatshield",
         "description": null
     },
     {
-        "id": 5,
         "name": "Rod",
         "description": null
     },
     {
-        "id": 6,
         "name": "Daggers",
         "description": null
     },
     {
-        "id": 7,
         "name": "Archistaff",
         "description": null
     },
     {
-        "id": 8,
         "name": "Magick Bow",
         "description": null
     },
     {
-        "id": 9,
         "name": "Greatsword",
         "description": null
     },
     {
-        "id": 10,
         "name": "Magick Gauntlet",
         "description": null
     },
     {
-        "id": 11,
         "name": "Spirit Lance",
         "description": null
     },
     {
-        "id": 12,
         "name": "Magick Sword",
         "description": null
     }

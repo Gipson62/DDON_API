@@ -1,3 +1,6 @@
+export type Opaque<K, T> = T & { __opaque__ : K };
+
+
 export class Result<T, Err> {
     private readonly success: boolean;
     private readonly value?: T | undefined;
